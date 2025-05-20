@@ -13,9 +13,10 @@ id = "rodio"
 bio = "a catdog person"
 avatar = "img/avatar.jpeg"
 links = [
+    { name = "Mastodon", icon = "codeberg", url = "https://codeberg.org/rodio" },
     { name = "GitHub", icon = "github", url = "https://github.com/rodio" },
     { name = "Mastodon", icon = "mastodon", url = "https://mastodon.social/@rodionb" },
-    { name = "Email", icon = "email", url = "mailto:<your-email-address>" },
+    { name = "Email", icon = "email", url = "mailto:rodion.borovyk@gmail.com" },
 ]
 
 # Show a few recent posts in home page
@@ -27,16 +28,11 @@ date_format = "%b %-d, %Y"
 
 Hi, I'm ...
 
-... Rodion Borovyk. I am a software developer.
+... Rodion Borovyk. I am interested in software development, art, psychology, aviation, music and many other things.
 
-I am currently working on Mapstic, my project dedicated to rendering geographical maps. You can find its code on
-my GitHub.
+I am currently working on my personal projects involving the Rust programming language, WebGPU, OpenStreetMap.
+You can find my code on my GitHub and Codeberg.
 
-All human beings are born free and equal in dignity and rights.
-They are endowed with reason and conscience and should act
-towards one another in a spirit of brotherhood.
-
-My GPG key ID is `7E0E7E4BBBAADEC3`
-
+I am hoping to add more information about myself here
 
 ## Recent blog posts:

@@ -1,5 +1,5 @@
 +++
-title = "My first post"
+title = "This is going to be my first post, coming soon ..."
 date = 2025-05-19
 +++
 
