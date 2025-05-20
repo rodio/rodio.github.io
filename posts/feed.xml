@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+	<title>My Blog</title>
+	<subtitle>My blog site.</subtitle>
+	<link href="https://rodio.github.io/posts/feed.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://rodio.github.io/posts/"/>
+	<updated>2025-05-19T00:00:00+00:00</updated>
+	<id>https://rodio.github.io/posts/feed.xml</id>
+	<entry xml:lang="en">
+		<title>My first post</title>
+		<published>2025-05-19T00:00:00+00:00</published>
+		<updated>2025-05-19T00:00:00+00:00</updated>
+		<link href="https://rodio.github.io/posts/first/" type="text/html"/>
+		<id>https://rodio.github.io/posts/first/</id>
+		<content type="html">&lt;h2 id=&quot;this-is-my-first-blog-post&quot;&gt;This is my first blog post.&lt;a class=&quot;zola-anchor&quot; href=&quot;#this-is-my-first-blog-post&quot; aria-label=&quot;Anchor link for: this-is-my-first-blog-post&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;A nice post&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;human-rights&quot;&gt;Human Rights&lt;a class=&quot;zola-anchor&quot; href=&quot;#human-rights&quot; aria-label=&quot;Anchor link for: human-rights&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;All human beings are born free and equal in dignity and rights.
+They are endowed with reason and conscience and should act
+towards one another in a spirit of brotherhood.&lt;&#x2F;p&gt;
+</content>
+	</entry>
+</feed>

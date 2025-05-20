@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>404</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="https://rodio.github.io/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://rodio.github.io/img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://rodio.github.io/img/apple-touch-icon.png">
+  <style>
+@font-face {
+  font-display: swap;
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  src: url('/font/libre-baskerville-v16-latin-regular.woff2') format('woff2'); 
+}
+
+footer, header {
+  font-family: var(--main-font);
+}
+
+#name {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.8em;
+  line-height: 1;
+  font-weight: 800;
+}
+
+#bio  {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  line-height: 0.2
+}
+
+.post, .blog, .prose, .section-title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1em;
+  font-weight: 400;
+}
+
+.section-title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.3em;
+  font-weight: 400;
+}
+
+</style>
+
+  <style>
+
+  /* light mode colors */
+  body {
+    --primary-color: #5871a2;
+    --primary-pale-color: #5871a233;
+    --primary-decoration-color: #5871a210;
+    --bg-color: #ffffff;
+    --text-color: #2f3030;
+    --text-pale-color: #767676;
+    --text-decoration-color: #a9a9a9;
+    --highlight-mark-color: #5f75b020;
+
+    --callout-note-color: #5871a2;
+    --callout-tip-color: #268556;
+    --callout-important-color: #885fc9;
+    --callout-warning-color: #ab6632;
+    --callout-caution-color: #c64e4e;
+  }
+
+  /* dark mode colors */
+  body.dark {
+    --primary-color: #6f8fd1;
+    --primary-pale-color: #6f8fd166;
+    --primary-decoration-color: #6f8fd112;
+    --bg-color: #1c1c1c;
+    --text-color: #c1c1c1;
+    --text-pale-color: #848484;
+    --text-decoration-color: #5f5f5f;
+    --highlight-mark-color: #8296cb3b;
+
+    --callout-note-color: #6f8fd1;
+    --callout-tip-color: #47976f;
+    --callout-important-color: #9776cd;
+    --callout-warning-color: #ad7a52;
+    --callout-caution-color: #d06161;
+  }
+
+  /* typography */
+  body {
+    --main-font: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --code-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    --homepage-max-width: 768px;
+    --main-max-width: 768px;
+    --avatar-size: 60px;
+    --font-size: 16px;
+    --line-height: 1.75;
+    --img-border-radius: 0px;
+    --detail-border-radius: 0px;
+    --dark-mode-img-brightness: 0.75;
+    --dark-mode-chart-brightness: 0.75;
+    --inline-code-border-radius: 2px;
+    --inline-code-bg-color: var(--primary-decoration-color);
+    --block-code-border-radius: 0px;
+    --block-code-border-color: var(--primary-color);
+    --detail-border-color: var(--primary-color);
+  }
+
+</style>
+
+  <link rel="stylesheet" href="https://rodio.github.io/main.css">
+  
+  
+
+</head>
+
+<body class="not-found">
+  
+<div class="wrapper">
+  <p class="error">
+    404 Not Found
+  </p>
+  <a class="instant" href="https://rodio.github.io">« back to home »</a>
+</div>
+
+
+  <script>
+    function enableThemeToggle() {
+      const themeToggle = document.querySelector('#theme-toggle');
+      if (!themeToggle) return;
+      const hlLink = document.querySelector('link#hl');
+      const preferDark = window.matchMedia("(prefers-color-scheme: dark)");
+      function toggleTheme(theme) {
+        if (theme == "dark") document.body.classList.add('dark'); else document.body.classList.remove('dark');
+        if (hlLink) hlLink.href = `/hl-${theme}.css`;
+        sessionStorage.setItem("theme", theme);
+        toggleGiscusTheme(theme);
+      }
+      function toggleGiscusTheme(theme) {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (iframe) iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: `${location.origin}/giscus_${theme}.css` } } }, 'https://giscus.app');
+      }
+      function initGiscusTheme(evt) {
+        if (evt.origin !== 'https://giscus.app') return;
+        if (!(typeof evt.data === 'object' && evt.data.giscus)) return;
+        toggleGiscusTheme(sessionStorage.getItem("theme") || (preferDark.matches ? "dark" : "light"));
+        window.removeEventListener('message', initGiscusTheme);
+      }
+      window.addEventListener('message', initGiscusTheme);
+      themeToggle.addEventListener('click', () => toggleTheme(sessionStorage.getItem("theme") == "dark" ? "light" : "dark"));
+      preferDark.addEventListener("change", e => toggleTheme(e.matches ? "dark" : "light"));
+      if (!sessionStorage.getItem("theme") && preferDark.matches) toggleTheme("dark");
+      if (sessionStorage.getItem("theme") == "dark") toggleTheme("dark");
+    }
+    enableThemeToggle()
+    const theme = sessionStorage.getItem('theme');
+    const match = window.matchMedia("(prefers-color-scheme: dark)").matches
+    if ((theme && theme == 'dark') || (!theme && match)) {
+      document.body.classList.add('dark');
+      const hl = document.querySelector('link#hl');
+      if (hl) hl.href = 'https://rodio.github.io/hl-dark.css';
+    }
+  </script>
+</body>
+
+</html>

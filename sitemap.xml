@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://rodio.github.io/</loc>
+    </url>
+    <url>
+        <loc>https://rodio.github.io/categories/</loc>
+    </url>
+    <url>
+        <loc>https://rodio.github.io/cv/</loc>
+    </url>
+    <url>
+        <loc>https://rodio.github.io/posts/</loc>
+    </url>
+    <url>
+        <loc>https://rodio.github.io/posts/first/</loc>
+        <lastmod>2025-05-19</lastmod>
+    </url>
+    <url>
+        <loc>https://rodio.github.io/tags/</loc>
+    </url>
+</urlset>
