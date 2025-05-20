@@ -18,4 +18,27 @@ reaction = false
 +++
 
 
-Download CV
+
+<div style="text-align: right">
+  <small>
+
+[Download as pdf](/img/cv.pdf)
+  </small>
+</div>
+
+![cv](/img/cv.svg)
+
+<div style="text-align: right">
+  <small>
+
+[Download as pdf](/img/cv.pdf)
+
+<sub>
+
+CV Made with [typst]("https://typst.app")
+
+</sub>
+
+  </small>
+</div>
+
