@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html lang="{% block lang %}{% endblock lang %}">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  {% block desc %}{% endblock desc %}
+  <title>{% block title %}{% endblock title %}</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ get_url(path='img/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ get_url(path='img/favicon-16x16.png') }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ get_url(path='img/apple-touch-icon.png') }}">
+  {% include "_custom_font.html" %}
+  {% include "_custom_css.html" %}
+  <link rel="stylesheet" href="{{ get_url(path='main.css') }}">
+  {% block head %}{% endblock head %}
+  {% include "_head_extend.html" %}
+
+</head>
+
+<body class="{% block page %}{% endblock page%}{% if config.extra.force_theme == "dark" %} dark{% endif %}">
+  {% block content %}{% endblock content %}
+
+  <script>
+    function enableThemeToggle() {
+      const themeToggle = document.querySelector('#theme-toggle');
+      if (!themeToggle) return;
+      const hlLink = document.querySelector('link#hl');
+      const preferDark = window.matchMedia("(prefers-color-scheme: dark)");
+      function toggleTheme(theme) {
+        if (theme == "dark") document.body.classList.add('dark'); else document.body.classList.remove('dark');
+        if (hlLink) hlLink.href = `/hl-${theme}.css`;
+        sessionStorage.setItem("theme", theme);
+        toggleGiscusTheme(theme);
+      }
+      function toggleGiscusTheme(theme) {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (iframe) iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: `${location.origin}/giscus_${theme}.css` } } }, 'https://giscus.app');
+      }
+      function initGiscusTheme(evt) {
+        if (evt.origin !== 'https://giscus.app') return;
+        if (!(typeof evt.data === 'object' && evt.data.giscus)) return;
+        toggleGiscusTheme(sessionStorage.getItem("theme") || (preferDark.matches ? "dark" : "light"));
+        window.removeEventListener('message', initGiscusTheme);
+      }
+      window.addEventListener('message', initGiscusTheme);
+      themeToggle.addEventListener('click', () => toggleTheme(sessionStorage.getItem("theme") == "dark" ? "light" : "dark"));
+      preferDark.addEventListener("change", e => toggleTheme(e.matches ? "dark" : "light"));
+      if (!sessionStorage.getItem("theme") && preferDark.matches) toggleTheme("dark");
+      if (sessionStorage.getItem("theme") == "dark") toggleTheme("dark");
+    }
+    enableThemeToggle()
+    const theme = sessionStorage.getItem('theme');
+    const match = window.matchMedia("(prefers-color-scheme: dark)").matches
+    if ((theme && theme == 'dark') || (!theme && match)) {
+      document.body.classList.add('dark');
+      const hl = document.querySelector('link#hl');
+      if (hl) hl.href = '{{ get_url(path="hl-dark.css") }}';
+    }
+  </script>
+</body>
+
+</html>
