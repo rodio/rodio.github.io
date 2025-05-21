@@ -2,16 +2,16 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
 	<title>My Blog</title>
 	<subtitle>My blog site.</subtitle>
-	<link href="https://rodio.github.io/posts/feed.xml" rel="self" type="application/atom+xml"/>
-    <link href="https://rodio.github.io/posts/"/>
+	<link href="https://rodio.codeberg.page/posts/feed.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://rodio.codeberg.page/posts/"/>
 	<updated>2025-05-19T00:00:00+00:00</updated>
-	<id>https://rodio.github.io/posts/feed.xml</id>
+	<id>https://rodio.codeberg.page/posts/feed.xml</id>
 	<entry xml:lang="en">
 		<title>This is going to be my first post, coming soon ...</title>
 		<published>2025-05-19T00:00:00+00:00</published>
 		<updated>2025-05-19T00:00:00+00:00</updated>
-		<link href="https://rodio.github.io/posts/first/" type="text/html"/>
-		<id>https://rodio.github.io/posts/first/</id>
+		<link href="https://rodio.codeberg.page/posts/first/" type="text/html"/>
+		<id>https://rodio.codeberg.page/posts/first/</id>
 		<content type="html">&lt;h2 id=&quot;this-is-my-first-blog-post&quot;&gt;This is my first blog post.&lt;a class=&quot;zola-anchor&quot; href=&quot;#this-is-my-first-blog-post&quot; aria-label=&quot;Anchor link for: this-is-my-first-blog-post&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
 &lt;&#x2F;h2&gt;
 &lt;p&gt;A nice post&lt;&#x2F;p&gt;

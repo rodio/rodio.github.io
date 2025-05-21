@@ -5,7 +5,7 @@
 #
 #=========================================================================================
 
-base_url = "https://rodio.github.io"
+base_url = "https://rodio.codeberg.page"
 title = "Rodion Borovyk"
 description = "Rodion Borovyk's website"
 default_language = "en"
