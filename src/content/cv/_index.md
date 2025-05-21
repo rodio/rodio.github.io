@@ -35,7 +35,7 @@ reaction = false
 
 <sub>
 
-CV Made with [typst]("https://typst.app")
+CV Made with [typst](https://typst.app)
 
 </sub>
 
