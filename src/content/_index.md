@@ -9,7 +9,6 @@ footer = false
 
 # If you don't want to display id/bio/avatar, simply comment out that line
 name = "Rodion Borovyk"
-id = "rodio"
 bio = "a catdog person"
 avatar = "img/avatar.jpeg"
 links = [
