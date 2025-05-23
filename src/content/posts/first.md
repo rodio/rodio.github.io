@@ -1,7 +1,6 @@
 +++
 title = "A Detour: winit + WGPU, coming soon ..."
 date = 2025-05-19
-draft = true
 +++
 
 Sometimes I read some code that intuitively should not work, yet it is working fine and I just can't.
