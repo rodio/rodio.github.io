@@ -1,6 +1,7 @@
 +++
 title = "A Detour: winit + WGPU, coming soon ..."
 date = 2025-05-19
+draft = true
 +++
 
 Sometimes I read some code that intuitively should not work, yet it is working fine and I just can't.
@@ -30,7 +31,7 @@ let window = winit_event_loop.create_window(window_attributes).unwrap();
 let surface = wgpu_instance.create_surface(&window).unwrap();
 ````
 
-By looking directly at WGPU's `Cargo.toml` (where its dependencies are declared) we can see that wgpu does not have
+By looking directly at wgpu's `Cargo.toml` (where its dependencies are declared) we can see that wgpu does not have
 winit as a dependecy. Winit does not 'know' about wgpu either.
 
 *How is it possible that a method from one crate takes an instance of a struct from another (seemingly unrelated)
@@ -38,7 +39,7 @@ crate?*
 
 So let's have a look starting from WGPU's perspective.
 
-## Part One -- Surface Target
+## Part One: Surface Target
 
 The signature of WGPU's `create_surface(...)` method from above is as follows:
 ```rust
@@ -84,7 +85,7 @@ can be converted _into_ surface target. So behind the scenes, there is
 So we now can cut the middleman called `SurfaceTarget` and our mystery would be solved *if we could prove that
 `winit::Window` is somehow related to `wgpu::WindowHandle`.*
 
-## Part Two -- Window Handle
+## Part Two: Window Handle
 
 So what kind of thing this `wgpu::WindowHandle` is? Let's go to its definition:
 
@@ -101,12 +102,11 @@ Not much, but this is kind of a big thing here because while `WindowHandle` is c
 Now the `raw_window_handle` crate seems to be the bridge connecting these two crates (`winit` and `wgpu`) and the key
 to solving this little mystery, because this dependency is included in both of these crates' `Cargo.toml` files
 
-To have undeniable proofs we must now only see that `winit`s `Window` implements `HasWindowHandle` and
+To have undeniable proofs we must now only see that `winit`'s `Window` implements `HasWindowHandle` and
 `HasDisplayHandle` and `WasmNotSendSync`
 
-## Part Three -- winit and `raw_window_handle`
+## Part Three: HasWindowHandle + HasDisplayHandle + WasmNotSendSync 
 
-from the point of view of winit
 ```rust
 #[cfg(feature = "rwh_06")]
 impl rwh_06::HasWindowHandle for Window {
