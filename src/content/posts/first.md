@@ -71,7 +71,7 @@ where
     T: WindowHandle + 'a,
 {
     fn from(window: T) -> Self {
-        Self::Window(Box::new(window))
+        // snip
     }
 }
 ```
