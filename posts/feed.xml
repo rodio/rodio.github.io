@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
-	<title>My Blog</title>
-	<subtitle>My blog site.</subtitle>
+	<title>Rodion&#x27;s Site</title>
+	<subtitle>Rodion&#x27;s blog posts</subtitle>
 	<link href="https://rodio.codeberg.page/posts/feed.xml" rel="self" type="application/atom+xml"/>
     <link href="https://rodio.codeberg.page/posts/"/>
 	<updated>2025-05-19T00:00:00+00:00</updated>
