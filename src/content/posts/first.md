@@ -1,28 +1,28 @@
 +++
-title = "A Detour: winit + WGPU, coming soon ..."
+title = "A Detour: winit & wgpu"
 date = 2025-05-19
 +++
 
-Sometimes I read some code that intuitively should not work, yet it is working fine and I just can't.
+Sometimes I read a piece of code that intuitively should not work, yet it is working fine and I just can't.
 Once in a while, I go and dig deeper to see why.
 
 I take some pride in these moments of inquisitiveness.
 
-Maybe that's because nurturing the curiosity that enables them feels like a rebellion -- instead of working on items
+Maybe that's because nurturing the curiosity that enables them feels like a rebellion — instead of working on items
 from to-do lists, thinking about deliverables, milestones, KPIs, ROIs, synergies, and otherwise making the world a
 better place, I take a scenic detour through the mountains of code.
 
 This post documents one of these detours.
 
-## Setting the scene
+## Setting the Scene
 
-[winit](https://docs.rs/winit/latest/winit/) is a Rust crate (library) that help with creating windows on different
+[winit](https://docs.rs/winit/latest/winit/) is a Rust crate (library) that helps with creating windows on different
 operating systems and platforms.
 
 [wgpu](https://wgpu.rs) is a graphics library for Rust based on the [WebGPU API](https://www.w3.org/TR/webgpu/).
-Applications using wgpu can run natively on Vulkan, Metal, DirectX 12, and OpenGL ES, and in browsers via WebAssembly.
+Applications built with it can run natively on Vulkan, Metal, DirectX 12, OpenGL ES, and in browsers via WebAssembly.
 
-You begin by creating a window, using winit. In order to draw something on it, you first need to create a wgpu surface.
+You begin by creating a window using winit. To draw something on it, you first need to create a wgpu surface.
 
 This looks something like this:
 ```rust
@@ -31,16 +31,19 @@ let surface = wgpu_instance.create_surface(&window).unwrap();
 ````
 
 By looking directly at wgpu's `Cargo.toml` (where its dependencies are declared) we can see that wgpu does not have
-winit as a dependecy. Winit does not 'know' about wgpu either.
+winit as a dependency. Likewise, winit does not "know" about wgpu either.
 
 *How is it possible that a method from one crate takes an instance of a struct from another (seemingly unrelated)
 crate?*
 
-So let's have a look starting from WGPU's perspective.
+So, let's have a look starting from wgpu's perspective.
 
 ## Part One: Surface Target
 
-The signature of WGPU's `create_surface(...)` method from above is as follows:
+Since we're feeding winit's window to wgpu's `create_surface(...)`, this mystery would be solved,
+*if we could see that `winit::Window` is somehow related to `wgpu::SurfaceTarget`.*
+
+The signature of wgpu's `create_surface(...)` method from above is as follows:
 ```rust
 pub fn create_surface<'window>(
     &self,
@@ -48,21 +51,18 @@ pub fn create_surface<'window>(
 ) -> Result<Surface<'window>, CreateSurfaceError> 
 ```
 
-Since we're feeding winit's window to wgpu's `create_surface(...)` it means that this mystery would be solved,
-*if we could see that `winit::Window` is somehow related to `wgpu::SurfaceTarget`.*
-
-Even not knowing much about Rust and ignoring the `'window`
-[lifetimes](https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html), I hope it is intuitive enough that
-`create_surface(...)` takes something that can be converted `Into` `SurfaceTarget`. So one might think that there must
-be code somewhere that implements this `Into` trait (e.g. interface) or
-[its counterpart](https://doc.rust-lang.org/rust-by-example/conversion/from_into.html), `From`, for `winit` `Window` 
+Even without knowing much about Rust—and ignoring the `'window`
+[lifetimes](https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html)— it is hopefully intuitive that
+`create_surface(...)` takes something that can be converted `Into` `SurfaceTarget`. So one might expect to find an
+implementation of this `Into` trait (i.e. interface) for a winit `Window` (or
+[its counterpart](https://doc.rust-lang.org/rust-by-example/conversion/from_into.html), `From`), 
 allowing us to convert the winit window into `SurfaceTarget`.
 
 But obviously, there's no point in searching for something like `impl From<winit::Window> for wgpu::SurfaceTarget` or
 `impl Into<wgpu::SurfaceTarget> for winit::Window` in any of these libraries' codebases, because they don't "know"
 about each other.
 
-Yet, we can easily find this [blanket implementation](https://doc.rust-lang.org/book/ch10-02-traits.html) in wgpu's
+Yet we can easily find this [blanket implementation](https://doc.rust-lang.org/book/ch10-02-traits.html) in wgpu's
 codebase:
 
 ```rust
@@ -76,48 +76,88 @@ where
 }
 ```
 
-It says that we can convert _from_ anything that implements something called `WindowHandle` _into_ `SurfaceTarget` 
-Given that Rust implements `Into` for us when it has `From`, it means that anything that implements `WindowHandle`
+It says that we can convert _from_ anything that implements something called `WindowHandle` _into_ `SurfaceTarget`.
+And because Rust implements `Into` for us when it has `From`, anything that implements `WindowHandle`
 can be converted _into_ surface target. So behind the scenes, there is
 `impl<T> Into<SurfaceTarget> for T where T: WindowHandle`.
 
-So we now can cut the middleman called `SurfaceTarget` and our mystery would be solved *if we could prove that
+So we now can cut out the middleman—`SurfaceTarget`—and our mystery would be solved *if we could see that
 `winit::Window` is somehow related to `wgpu::WindowHandle`.*
 
 ## Part Two: Window Handle
 
-So what kind of thing this `wgpu::WindowHandle` is? Let's go to its definition:
+So what kind of thing is `wgpu::WindowHandle`? Let's go to its definition:
 
 ```rust
 /// Super trait for window handles as used in [`SurfaceTarget`].
-pub trait WiindowHandle: HasWindowHandle + HasDisplayHandle + WasmNotSendSync {}
+pub trait WindowHandle: HasWindowHandle + HasDisplayHandle + WasmNotSendSync {}
 impl<T> WindowHandle for T where T: HasWindowHandle + HasDisplayHandle + WasmNotSendSync {}
 ```
-
-So this blanket implementation says that anything can be counted as a `WindowHandle` as long as it implements the other three traits.
-Not much, but this is kind of a big thing here because while `WindowHandle` is coming from the crate `wgpu`,
+This blanket implementation means that any type can be treated as a WindowHandle as long as it implements the three
+required traits. That's a big thing because while `WindowHandle` comes from the `wgpu` create,
 `HasWindowHandle` is from another crate called `raw_window_handle`.
 
 Now the `raw_window_handle` crate seems to be the bridge connecting these two crates (`winit` and `wgpu`) and the key
-to solving this little mystery, because this dependency is included in both of these crates' `Cargo.toml` files
+to solving this little mystery—since both crates include it as a dependency in their Cargo.toml files.
 
-To have undeniable proofs we must now only see that `winit`'s `Window` implements `HasWindowHandle` and
-`HasDisplayHandle` and `WasmNotSendSync`
+We must now only verify that `winit`'s `Window` implements `HasWindowHandle` and `HasDisplayHandle` and
+`WasmNotSendSync`
 
-## Part Three: HasWindowHandle + HasDisplayHandle + WasmNotSendSync 
+## Part Three: `HasWindowHandle` + `HasDisplayHandle` + `WasmNotSendSync`
+
+`HasWindowHandle` and `HasDisplayHandle` are relatively straightforward to find in `winit`'s codebase'(`rwh_06` is an
+alias for raw_window_handle version 0.6):
 
 ```rust
-#[cfg(feature = "rwh_06")]
 impl rwh_06::HasWindowHandle for Window {
     fn window_handle(&self) -> Result<rwh_06::WindowHandle<'_>, rwh_06::HandleError> {
       // snip
     }
 }
 
-#[cfg(feature = "rwh_06")]
 impl rwh_06::HasDisplayHandle for Window {
     fn display_handle(&self) -> Result<rwh_06::DisplayHandle<'_>, rwh_06::HandleError> {
       // snip
     }
 }
 ```
+   
+To examine the implementation for `WasmNotSendSync` we're going to need to go to go back to `wgpu`'s codebase' and
+(ignoring the conditional compilation attributes for simplicity) there we can find this blanket implementations:
+```rust 
+// 1:
+pub trait WasmNotSendSync: WasmNotSend + WasmNotSync {}
+// 2:
+impl<T: WasmNotSend + WasmNotSync> WasmNotSendSync for T {}
+
+// 3:
+pub trait WasmNotSend {}
+// 4:
+impl<T> WasmNotSend for T {}
+
+// 5:
+pub trait WasmNotSync {}
+impl<T> WasmNotSync for T {}
+```
+
+So, we've got:
+1. `WasmNotSendSync` is obviously `WasmNotSend + WasmNotSync`.
+2. Anything that implements `WasmNotSend` and `WasmNotSync`
+automatically implements `WasmNotSendSync`
+3. `WasmNotSend` is just a marker trait 
+4. Anything can be `WasmNotSend` since there is this blanket implementation.
+5. Anything can be `WasmNotSync` for the same reasons.
+
+Well, it seems like **every type** implements all these three traits...
+
+Now, one could take yet another detour to understand why these traits are needed in the first place—and potentially,
+this process is infinite.
+
+## Conclusion
+
+I often struggle to make time for detours like this. In a fast-moving world, there are always more urgent tasks —
+things that feel more “practical” or “effective.” That constant pressure often kills childlike-curiosity these
+journeys require. But this time, I pushed through — and I’m glad I did.
+
+Thanks for coming along. And if you made it this far, I hope you enjoyed the journey, too.
+

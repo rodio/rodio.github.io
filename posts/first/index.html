@@ -12,7 +12,7 @@
   
   <meta name="description" content="My blog site.">
 
-  <title>A Detour: winit + WGPU, coming soon ...</title>
+  <title>A Detour: winit &amp; wgpu</title>
   <link rel="icon" type="image/png" sizes="32x32" href="https://rodio.codeberg.page/img/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="https://rodio.codeberg.page/img/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="https://rodio.codeberg.page/img/apple-touch-icon.png">
@@ -96,8 +96,8 @@ footer, header {
   body {
     --main-font: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --code-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-    --homepage-max-width: 768px;
-    --main-max-width: 768px;
+    --homepage-max-width: 1000px;
+    --main-max-width: 60%;
     --avatar-size: 60px;
     --font-size: 16px;
     --line-height: 1.75;
@@ -136,7 +136,7 @@ footer, header {
       <ul>
         
         <li>
-          <a class="h2" href="#setting-the-scene">Setting the scene</a>
+          <a class="h2" href="#setting-the-scene">Setting the Scene</a>
           
         </li>
         
@@ -152,6 +152,11 @@ footer, header {
         
         <li>
           <a class="h2" href="#part-three-haswindowhandle-hasdisplayhandle-wasmnotsendsync">Part Three: HasWindowHandle + HasDisplayHandle + WasmNotSendSync</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#conclusion">Conclusion</a>
           
         </li>
         
@@ -185,7 +190,7 @@ footer, header {
 "></div>
       
       <article class="prose">
-        <h1>A Detour: winit + WGPU, coming soon ...</h1>
+        <h1>A Detour: winit &amp; wgpu</h1>
         <div id="post-info">
           <div id="date">
             <span id="publish">May 19, 2025</span>
@@ -199,49 +204,49 @@ footer, header {
 
         
 
-        <p>Sometimes I read some code that intuitively should not work, yet it is working fine and I just can't.
+        <p>Sometimes I read a piece of code that intuitively should not work, yet it is working fine and I just can't.
 Once in a while, I go and dig deeper to see why.</p>
 <p>I take some pride in these moments of inquisitiveness.</p>
-<p>Maybe that's because nurturing the curiosity that enables them feels like a rebellion -- instead of working on items
+<p>Maybe that's because nurturing the curiosity that enables them feels like a rebellion — instead of working on items
 from to-do lists, thinking about deliverables, milestones, KPIs, ROIs, synergies, and otherwise making the world a
 better place, I take a scenic detour through the mountains of code.</p>
 <p>This post documents one of these detours.</p>
-<h2 id="setting-the-scene">Setting the scene<a class="zola-anchor" href="#setting-the-scene" aria-label="Anchor link for: setting-the-scene" style="visibility: hidden;"></a>
+<h2 id="setting-the-scene">Setting the Scene<a class="zola-anchor" href="#setting-the-scene" aria-label="Anchor link for: setting-the-scene" style="visibility: hidden;"></a>
 </h2>
-<p><a rel="nofollow noreferrer" href="https://docs.rs/winit/latest/winit/">winit</a> is a Rust crate (library) that help with creating windows on different
+<p><a rel="nofollow noreferrer" href="https://docs.rs/winit/latest/winit/">winit</a> is a Rust crate (library) that helps with creating windows on different
 operating systems and platforms.</p>
 <p><a rel="nofollow noreferrer" href="https://wgpu.rs">wgpu</a> is a graphics library for Rust based on the <a rel="nofollow noreferrer" href="https://www.w3.org/TR/webgpu/">WebGPU API</a>.
-Applications using wgpu can run natively on Vulkan, Metal, DirectX 12, and OpenGL ES, and in browsers via WebAssembly.</p>
-<p>You begin by creating a window, using winit. In order to draw something on it, you first need to create a wgpu surface.</p>
+Applications built with it can run natively on Vulkan, Metal, DirectX 12, OpenGL ES, and in browsers via WebAssembly.</p>
+<p>You begin by creating a window using winit. To draw something on it, you first need to create a wgpu surface.</p>
 <p>This looks something like this:</p>
 <pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-storage z-type z-rust">let</span> window <span class="z-keyword z-operator z-assignment z-rust">=</span> winit_event_loop<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">create_window</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>window_attributes</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">unwrap</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
 </span><span class="z-source z-rust"><span class="z-storage z-type z-rust">let</span> surface <span class="z-keyword z-operator z-assignment z-rust">=</span> wgpu_instance<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">create_surface</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-keyword z-operator z-bitwise z-rust">&amp;</span>window</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">unwrap</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
 </span></code></pre>
 <p>By looking directly at wgpu's <code>Cargo.toml</code> (where its dependencies are declared) we can see that wgpu does not have
-winit as a dependecy. Winit does not 'know' about wgpu either.</p>
+winit as a dependency. Likewise, winit does not "know" about wgpu either.</p>
 <p><em>How is it possible that a method from one crate takes an instance of a struct from another (seemingly unrelated)
 crate?</em></p>
-<p>So let's have a look starting from WGPU's perspective.</p>
+<p>So, let's have a look starting from wgpu's perspective.</p>
 <h2 id="part-one-surface-target">Part One: Surface Target<a class="zola-anchor" href="#part-one-surface-target" aria-label="Anchor link for: part-one-surface-target" style="visibility: hidden;"></a>
 </h2>
-<p>The signature of WGPU's <code>create_surface(...)</code> method from above is as follows:</p>
+<p>Since we're feeding winit's window to wgpu's <code>create_surface(...)</code>, this mystery would be solved,
+<em>if we could see that <code>winit::Window</code> is somehow related to <code>wgpu::SurfaceTarget</code>.</em></p>
+<p>The signature of wgpu's <code>create_surface(...)</code> method from above is as follows:</p>
 <pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">create_surface</span></span><span class="z-meta z-generic z-rust"><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-storage z-modifier z-lifetime z-rust">&#39;window</span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span>
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust">    <span class="z-keyword z-operator z-rust">&amp;</span><span class="z-variable z-parameter z-rust">self</span>,
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust">    <span class="z-variable z-parameter z-rust">target</span><span class="z-punctuation z-separator z-rust">:</span> impl <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Into</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-meta z-generic z-rust">SurfaceTarget<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-storage z-modifier z-lifetime z-rust">&#39;window</span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>,
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-meta z-generic z-rust">Surface<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-storage z-modifier z-lifetime z-rust">&#39;window</span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>, CreateSurfaceError<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span> 
 </span></span></span></code></pre>
-<p>Since we're feeding winit's window to wgpu's <code>create_surface(...)</code> it means that this mystery would be solved,
-<em>if we could see that <code>winit::Window</code> is somehow related to <code>wgpu::SurfaceTarget</code>.</em></p>
-<p>Even not knowing much about Rust and ignoring the <code>'window</code>
-<a rel="nofollow noreferrer" href="https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html">lifetimes</a>, I hope it is intuitive enough that
-<code>create_surface(...)</code> takes something that can be converted <code>Into</code> <code>SurfaceTarget</code>. So one might think that there must
-be code somewhere that implements this <code>Into</code> trait (e.g. interface) or
-<a rel="nofollow noreferrer" href="https://doc.rust-lang.org/rust-by-example/conversion/from_into.html">its counterpart</a>, <code>From</code>, for <code>winit</code> <code>Window</code>
+<p>Even without knowing much about Rust—and ignoring the <code>'window</code>
+<a rel="nofollow noreferrer" href="https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html">lifetimes</a>— it is hopefully intuitive that
+<code>create_surface(...)</code> takes something that can be converted <code>Into</code> <code>SurfaceTarget</code>. So one might expect to find an
+implementation of this <code>Into</code> trait (i.e. interface) for a winit <code>Window</code> (or
+<a rel="nofollow noreferrer" href="https://doc.rust-lang.org/rust-by-example/conversion/from_into.html">its counterpart</a>, <code>From</code>),
 allowing us to convert the winit window into <code>SurfaceTarget</code>.</p>
 <p>But obviously, there's no point in searching for something like <code>impl From&lt;winit::Window&gt; for wgpu::SurfaceTarget</code> or
 <code>impl Into&lt;wgpu::SurfaceTarget&gt; for winit::Window</code> in any of these libraries' codebases, because they don't "know"
 about each other.</p>
-<p>Yet, we can easily find this <a rel="nofollow noreferrer" href="https://doc.rust-lang.org/book/ch10-02-traits.html">blanket implementation</a> in wgpu's
+<p>Yet we can easily find this <a rel="nofollow noreferrer" href="https://doc.rust-lang.org/book/ch10-02-traits.html">blanket implementation</a> in wgpu's
 codebase:</p>
 <pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span></span><span class="z-meta z-impl z-rust"><span class="z-meta z-generic z-rust"><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-storage z-modifier z-lifetime z-rust">&#39;a</span>, T<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span><span class="z-meta z-impl z-rust"> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">From</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>T<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span> <span class="z-keyword z-other z-rust">for</span></span><span class="z-meta z-impl z-rust"> <span class="z-entity z-name z-impl z-rust">SurfaceTarget</span><span class="z-meta z-generic z-rust"><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-storage z-modifier z-lifetime z-rust">&#39;a</span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>
 </span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"></span><span class="z-meta z-impl z-rust"><span class="z-keyword z-other z-rust">where</span>
@@ -252,42 +257,76 @@ codebase:</p>
 </span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
 </span></code></pre>
-<p>It says that we can convert <em>from</em> anything that implements something called <code>WindowHandle</code> <em>into</em> <code>SurfaceTarget</code>
-Given that Rust implements <code>Into</code> for us when it has <code>From</code>, it means that anything that implements <code>WindowHandle</code>
+<p>It says that we can convert <em>from</em> anything that implements something called <code>WindowHandle</code> <em>into</em> <code>SurfaceTarget</code>.
+And because Rust implements <code>Into</code> for us when it has <code>From</code>, anything that implements <code>WindowHandle</code>
 can be converted <em>into</em> surface target. So behind the scenes, there is
 <code>impl&lt;T&gt; Into&lt;SurfaceTarget&gt; for T where T: WindowHandle</code>.</p>
-<p>So we now can cut the middleman called <code>SurfaceTarget</code> and our mystery would be solved <em>if we could prove that
+<p>So we now can cut out the middleman—<code>SurfaceTarget</code>—and our mystery would be solved <em>if we could see that
 <code>winit::Window</code> is somehow related to <code>wgpu::WindowHandle</code>.</em></p>
 <h2 id="part-two-window-handle">Part Two: Window Handle<a class="zola-anchor" href="#part-two-window-handle" aria-label="Anchor link for: part-two-window-handle" style="visibility: hidden;"></a>
 </h2>
-<p>So what kind of thing this <code>wgpu::WindowHandle</code> is? Let's go to its definition:</p>
+<p>So what kind of thing is <code>wgpu::WindowHandle</code>? Let's go to its definition:</p>
 <pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-comment z-line z-documentation z-rust"><span class="z-punctuation z-definition z-comment z-rust">///</span> Super trait for window handles as used in [`SurfaceTarget`].
-</span></span><span class="z-source z-rust"><span class="z-meta z-trait z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-trait z-rust">trait</span> <span class="z-entity z-name z-trait z-rust">WiindowHandle</span>: HasWindowHandle + HasDisplayHandle + WasmNotSendSync <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></span><span class="z-source z-rust"><span class="z-meta z-trait z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-trait z-rust">trait</span> <span class="z-entity z-name z-trait z-rust">WindowHandle</span>: HasWindowHandle + HasDisplayHandle + WasmNotSendSync <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
 </span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span></span><span class="z-meta z-impl z-rust"><span class="z-meta z-generic z-rust"><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>T<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span><span class="z-meta z-impl z-rust"> WindowHandle <span class="z-keyword z-other z-rust">for</span></span><span class="z-meta z-impl z-rust"> <span class="z-entity z-name z-impl z-rust">T</span> </span><span class="z-meta z-impl z-rust"><span class="z-keyword z-other z-rust">where</span> T<span class="z-punctuation z-separator z-rust">:</span> HasWindowHandle + HasDisplayHandle + WasmNotSendSync </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
 </span></code></pre>
-<p>So this blanket implementation says that anything can be counted as a <code>WindowHandle</code> as long as it implements the other three traits.
-Not much, but this is kind of a big thing here because while <code>WindowHandle</code> is coming from the crate <code>wgpu</code>,
+<p>This blanket implementation means that any type can be treated as a WindowHandle as long as it implements the three
+required traits. That's a big thing because while <code>WindowHandle</code> comes from the <code>wgpu</code> create,
 <code>HasWindowHandle</code> is from another crate called <code>raw_window_handle</code>.</p>
 <p>Now the <code>raw_window_handle</code> crate seems to be the bridge connecting these two crates (<code>winit</code> and <code>wgpu</code>) and the key
-to solving this little mystery, because this dependency is included in both of these crates' <code>Cargo.toml</code> files</p>
-<p>To have undeniable proofs we must now only see that <code>winit</code>'s <code>Window</code> implements <code>HasWindowHandle</code> and
-<code>HasDisplayHandle</code> and <code>WasmNotSendSync</code></p>
-<h2 id="part-three-haswindowhandle-hasdisplayhandle-wasmnotsendsync">Part Three: HasWindowHandle + HasDisplayHandle + WasmNotSendSync<a class="zola-anchor" href="#part-three-haswindowhandle-hasdisplayhandle-wasmnotsendsync" aria-label="Anchor link for: part-three-haswindowhandle-hasdisplayhandle-wasmnotsendsync" style="visibility: hidden;"></a>
+to solving this little mystery—since both crates include it as a dependency in their Cargo.toml files.</p>
+<p>We must now only verify that <code>winit</code>'s <code>Window</code> implements <code>HasWindowHandle</code> and <code>HasDisplayHandle</code> and
+<code>WasmNotSendSync</code></p>
+<h2 id="part-three-haswindowhandle-hasdisplayhandle-wasmnotsendsync">Part Three: <code>HasWindowHandle</code> + <code>HasDisplayHandle</code> + <code>WasmNotSendSync</code><a class="zola-anchor" href="#part-three-haswindowhandle-hasdisplayhandle-wasmnotsendsync" aria-label="Anchor link for: part-three-haswindowhandle-hasdisplayhandle-wasmnotsendsync" style="visibility: hidden;"></a>
 </h2>
-<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-annotation z-rust"><span class="z-punctuation z-definition z-annotation z-rust">#</span><span class="z-punctuation z-section z-group z-begin z-rust">[</span><span class="z-variable z-annotation z-rust">cfg</span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust">feature <span class="z-keyword z-operator z-rust">=</span> <span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>rwh_06<span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-punctuation z-section z-group z-end z-rust">]</span></span>
-</span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-path z-rust">rwh_06<span class="z-punctuation z-accessor z-rust">::</span></span>HasWindowHandle <span class="z-keyword z-other z-rust">for</span></span><span class="z-meta z-impl z-rust"> <span class="z-entity z-name z-impl z-rust">Window</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+<p><code>HasWindowHandle</code> and <code>HasDisplayHandle</code> are relatively straightforward to find in <code>winit</code>'s codebase'(<code>rwh_06</code> is an
+alias for raw_window_handle version 0.6):</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-path z-rust">rwh_06<span class="z-punctuation z-accessor z-rust">::</span></span>HasWindowHandle <span class="z-keyword z-other z-rust">for</span></span><span class="z-meta z-impl z-rust"> <span class="z-entity z-name z-impl z-rust">Window</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust">    <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">window_handle</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-variable z-parameter z-rust">self</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-meta z-path z-rust">rwh_06<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-generic z-rust">WindowHandle<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>&#39;<span class="z-keyword z-operator z-rust">_</span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>, <span class="z-meta z-path z-rust">rwh_06<span class="z-punctuation z-accessor z-rust">::</span></span>HandleError<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
 </span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">      <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> snip
 </span></span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
 </span><span class="z-source z-rust">
-</span><span class="z-source z-rust"><span class="z-meta z-annotation z-rust"><span class="z-punctuation z-definition z-annotation z-rust">#</span><span class="z-punctuation z-section z-group z-begin z-rust">[</span><span class="z-variable z-annotation z-rust">cfg</span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust">feature <span class="z-keyword z-operator z-rust">=</span> <span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>rwh_06<span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-punctuation z-section z-group z-end z-rust">]</span></span>
 </span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-path z-rust">rwh_06<span class="z-punctuation z-accessor z-rust">::</span></span>HasDisplayHandle <span class="z-keyword z-other z-rust">for</span></span><span class="z-meta z-impl z-rust"> <span class="z-entity z-name z-impl z-rust">Window</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust">    <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">display_handle</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-variable z-parameter z-rust">self</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-meta z-path z-rust">rwh_06<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-generic z-rust">DisplayHandle<span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>&#39;<span class="z-keyword z-operator z-rust">_</span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>, <span class="z-meta z-path z-rust">rwh_06<span class="z-punctuation z-accessor z-rust">::</span></span>HandleError<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
 </span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">      <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> snip
 </span></span></span></span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust">    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
 </span></span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
 </span></code></pre>
+<p>To examine the implementation for <code>WasmNotSendSync</code> we're going to need to go to go back to <code>wgpu</code>'s codebase' and
+(ignoring the conditional compilation attributes for simplicity) there we can find this blanket implementations:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> 1:
+</span></span><span class="z-source z-rust"><span class="z-meta z-trait z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-trait z-rust">trait</span> <span class="z-entity z-name z-trait z-rust">WasmNotSendSync</span>: WasmNotSend + WasmNotSync <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span><span class="z-source z-rust"><span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> 2:
+</span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span></span><span class="z-meta z-impl z-rust"><span class="z-meta z-generic z-rust"><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>T<span class="z-punctuation z-separator z-rust">:</span> WasmNotSend <span class="z-keyword z-operator z-rust">+</span> WasmNotSync<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span><span class="z-meta z-impl z-rust"> WasmNotSendSync <span class="z-keyword z-other z-rust">for</span></span><span class="z-meta z-impl z-rust"> <span class="z-entity z-name z-impl z-rust">T</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span><span class="z-source z-rust">
+</span><span class="z-source z-rust"><span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> 3:
+</span></span><span class="z-source z-rust"><span class="z-meta z-trait z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-trait z-rust">trait</span> <span class="z-entity z-name z-trait z-rust">WasmNotSend</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span><span class="z-source z-rust"><span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> 4:
+</span></span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span></span><span class="z-meta z-impl z-rust"><span class="z-meta z-generic z-rust"><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>T<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span><span class="z-meta z-impl z-rust"> WasmNotSend <span class="z-keyword z-other z-rust">for</span></span><span class="z-meta z-impl z-rust"> <span class="z-entity z-name z-impl z-rust">T</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span><span class="z-source z-rust">
+</span><span class="z-source z-rust"><span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> 5:
+</span></span><span class="z-source z-rust"><span class="z-meta z-trait z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-trait z-rust">trait</span> <span class="z-entity z-name z-trait z-rust">WasmNotSync</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span></span><span class="z-meta z-impl z-rust"><span class="z-meta z-generic z-rust"><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>T<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span><span class="z-meta z-impl z-rust"> WasmNotSync <span class="z-keyword z-other z-rust">for</span></span><span class="z-meta z-impl z-rust"> <span class="z-entity z-name z-impl z-rust">T</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>So, we've got:</p>
+<ol>
+<li><code>WasmNotSendSync</code> is obviously <code>WasmNotSend + WasmNotSync</code>.</li>
+<li>Anything that implements <code>WasmNotSend</code> and <code>WasmNotSync</code>
+automatically implements <code>WasmNotSendSync</code></li>
+<li><code>WasmNotSend</code> is just a marker trait</li>
+<li>Anything can be <code>WasmNotSend</code> since there is this blanket implementation.</li>
+<li>Anything can be <code>WasmNotSync</code> for the same reasons.</li>
+</ol>
+<p>Well, it seems like <strong>every type</strong> implements all these three traits...</p>
+<p>Now, one could take yet another detour to understand why these traits are needed in the first place—and potentially,
+this process is infinite.</p>
+<h2 id="conclusion">Conclusion<a class="zola-anchor" href="#conclusion" aria-label="Anchor link for: conclusion" style="visibility: hidden;"></a>
+</h2>
+<p>I often struggle to make time for detours like this. In a fast-moving world, there are always more urgent tasks —
+things that feel more “practical” or “effective.” That constant pressure often kills childlike-curiosity these
+journeys require. But this time, I pushed through — and I’m glad I did.</p>
+<p>Thanks for coming along. And if you made it this far, I hope you enjoyed the journey, too.</p>
 
       </article>
 
