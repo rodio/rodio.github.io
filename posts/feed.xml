@@ -35,7 +35,7 @@ winit as a dependency. Likewise, winit does not &quot;know&quot; about wgpu eith
 &lt;p&gt;&lt;em&gt;How is it possible that a method from one crate takes an instance of a struct from another (seemingly unrelated)
 crate?&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;So, let&#x27;s have a look starting from wgpu&#x27;s perspective.&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;part-one-surface-target&quot;&gt;Part One: Surface Target&lt;a class=&quot;zola-anchor&quot; href=&quot;#part-one-surface-target&quot; aria-label=&quot;Anchor link for: part-one-surface-target&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;h2 id=&quot;part-one-surfacetarget&quot;&gt;Part One: &lt;code&gt;SurfaceTarget&lt;&#x2F;code&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#part-one-surfacetarget&quot; aria-label=&quot;Anchor link for: part-one-surfacetarget&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
 &lt;&#x2F;h2&gt;
 &lt;p&gt;Since we&#x27;re feeding winit&#x27;s window to wgpu&#x27;s &lt;code&gt;create_surface(...)&lt;&#x2F;code&gt;, this mystery would be solved,
 &lt;em&gt;if we could see that &lt;code&gt;winit::Window&lt;&#x2F;code&gt; is somehow related to &lt;code&gt;wgpu::SurfaceTarget&lt;&#x2F;code&gt;.&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
@@ -71,7 +71,7 @@ can be converted &lt;em&gt;into&lt;&#x2F;em&gt; surface target. So behind the sc
 &lt;code&gt;impl&amp;lt;T&amp;gt; Into&amp;lt;SurfaceTarget&amp;gt; for T where T: WindowHandle&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
 &lt;p&gt;So we now can cut out the middleman—&lt;code&gt;SurfaceTarget&lt;&#x2F;code&gt;—and our mystery would be solved &lt;em&gt;if we could see that
 &lt;code&gt;winit::Window&lt;&#x2F;code&gt; is somehow related to &lt;code&gt;wgpu::WindowHandle&lt;&#x2F;code&gt;.&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;part-two-window-handle&quot;&gt;Part Two: Window Handle&lt;a class=&quot;zola-anchor&quot; href=&quot;#part-two-window-handle&quot; aria-label=&quot;Anchor link for: part-two-window-handle&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;h2 id=&quot;part-two-windowhandle&quot;&gt;Part Two: &lt;code&gt;WindowHandle&lt;&#x2F;code&gt;&lt;a class=&quot;zola-anchor&quot; href=&quot;#part-two-windowhandle&quot; aria-label=&quot;Anchor link for: part-two-windowhandle&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
 &lt;&#x2F;h2&gt;
 &lt;p&gt;So what kind of thing is &lt;code&gt;wgpu::WindowHandle&lt;&#x2F;code&gt;? Let&#x27;s go to its definition:&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust z-code&quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-comment z-line z-documentation z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-rust&quot;&gt;&#x2F;&#x2F;&#x2F;&lt;&#x2F;span&gt; Super trait for window handles as used in [`SurfaceTarget`].

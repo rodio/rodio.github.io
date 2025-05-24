@@ -38,7 +38,7 @@ crate?*
 
 So, let's have a look starting from wgpu's perspective.
 
-## Part One: Surface Target
+## Part One: `SurfaceTarget`
 
 Since we're feeding winit's window to wgpu's `create_surface(...)`, this mystery would be solved,
 *if we could see that `winit::Window` is somehow related to `wgpu::SurfaceTarget`.*
@@ -84,7 +84,7 @@ can be converted _into_ surface target. So behind the scenes, there is
 So we now can cut out the middleman—`SurfaceTarget`—and our mystery would be solved *if we could see that
 `winit::Window` is somehow related to `wgpu::WindowHandle`.*
 
-## Part Two: Window Handle
+## Part Two: `WindowHandle`
 
 So what kind of thing is `wgpu::WindowHandle`? Let's go to its definition:
 

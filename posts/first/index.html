@@ -196,7 +196,7 @@ winit as a dependency. Likewise, winit does not "know" about wgpu either.</p>
 <p><em>How is it possible that a method from one crate takes an instance of a struct from another (seemingly unrelated)
 crate?</em></p>
 <p>So, let's have a look starting from wgpu's perspective.</p>
-<h2 id="part-one-surface-target">Part One: Surface Target<a class="zola-anchor" href="#part-one-surface-target" aria-label="Anchor link for: part-one-surface-target" style="visibility: hidden;"></a>
+<h2 id="part-one-surfacetarget">Part One: <code>SurfaceTarget</code><a class="zola-anchor" href="#part-one-surfacetarget" aria-label="Anchor link for: part-one-surfacetarget" style="visibility: hidden;"></a>
 </h2>
 <p>Since we're feeding winit's window to wgpu's <code>create_surface(...)</code>, this mystery would be solved,
 <em>if we could see that <code>winit::Window</code> is somehow related to <code>wgpu::SurfaceTarget</code>.</em></p>
@@ -232,7 +232,7 @@ can be converted <em>into</em> surface target. So behind the scenes, there is
 <code>impl&lt;T&gt; Into&lt;SurfaceTarget&gt; for T where T: WindowHandle</code>.</p>
 <p>So we now can cut out the middleman—<code>SurfaceTarget</code>—and our mystery would be solved <em>if we could see that
 <code>winit::Window</code> is somehow related to <code>wgpu::WindowHandle</code>.</em></p>
-<h2 id="part-two-window-handle">Part Two: Window Handle<a class="zola-anchor" href="#part-two-window-handle" aria-label="Anchor link for: part-two-window-handle" style="visibility: hidden;"></a>
+<h2 id="part-two-windowhandle">Part Two: <code>WindowHandle</code><a class="zola-anchor" href="#part-two-windowhandle" aria-label="Anchor link for: part-two-windowhandle" style="visibility: hidden;"></a>
 </h2>
 <p>So what kind of thing is <code>wgpu::WindowHandle</code>? Let's go to its definition:</p>
 <pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-comment z-line z-documentation z-rust"><span class="z-punctuation z-definition z-comment z-rust">///</span> Super trait for window handles as used in [`SurfaceTarget`].
