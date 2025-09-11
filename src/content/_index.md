@@ -9,7 +9,7 @@ footer = false
 
 # If you don't want to display id/bio/avatar, simply comment out that line
 name = "Rodion Borovyk"
-bio = "a catdog person"
+bio = "Software and other things"
 avatar = "img/avatar.jpeg"
 links = [
     { name = "Mastodon", icon = "codeberg", url = "https://codeberg.org/rodio" },
@@ -25,11 +25,7 @@ recent_more_text = "more »"
 date_format = "%b %-d, %Y"
 +++
 
-Hi, I'm ...
-
-... Rodion Borovyk. I am interested in software development, art, psychology, aviation, music and many other things.
-
-I am currently working on my personal projects involving the Rust programming language, WebGPU, OpenStreetMap.
+I am currently working on my personal and open source projects involving the Rust programming language.
 You can find my code on my GitHub and Codeberg.
 
 I am hoping to add more information about myself here
