@@ -15,6 +15,7 @@ links = [
     { name = "Mastodon", icon = "codeberg", url = "https://codeberg.org/rodio" },
     { name = "GitHub", icon = "github", url = "https://github.com/rodio" },
     { name = "Mastodon", icon = "mastodon", url = "https://mastodon.social/@rodionb" },
+    { name = "Bluesky", icon = "bluesky", url = "https://bsky.app/profile/rod-ion.bsky.social" },
     { name = "Email", icon = "email", url = "mailto:rodion.borovyk@gmail.com" },
 ]
 
