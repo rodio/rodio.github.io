@@ -1,7 +1,6 @@
-+++
-title = "Yet Another Explanation of Lifetimes in Rust"
-date = 2025-09-16
-+++
+---
+title: "Yet Another Explanation of Lifetimes in Rust"
+...
 
 This post is my attempt to understand Rust's lifetimes deeper.
 

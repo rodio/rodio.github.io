@@ -1,0 +1,81 @@
+@font-face {
+  font-display: swap;
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  src: url('file:///Users/rodion/src/site/font/libre-baskerville-v16-latin-regular.woff2') format('woff2');
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #b0b0b0;
+    background-color: #101010;
+  }
+
+  code {
+    color: #a0a0a0;
+    background-color: #1f1f1f;
+  }
+
+  .sourceCode {
+    color: #b0b0b0;
+    background-color: #202020;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  code {
+    background-color: #f0f0f0;
+  }
+
+  .sourceCode {
+    background-color: #f0f0f0;
+  }
+}
+
+body {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.75;
+  font-weight: 400;
+  max-width: 1000px;
+  margin: auto;
+  text-align: justify;
+}
+
+a {
+  color: #5871a2;
+}
+
+code {
+  border-radius: 8px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  border: none;
+  font-size: 0.85em;
+}
+
+.sourceCode {
+  border-radius: 8px;
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
+  line-height: 0.8em;
+
+
+  code {
+    border: none;
+  }
+
+  span {
+    border: none;
+  }
+
+  pre {
+    line-height: 1.4em;
+    border: none;
+    margin-top: 0.8em;
+    margin-bottom: 1em;
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+}

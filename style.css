@@ -1,0 +1,71 @@
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #b0b0b0;
+    background-color: #101010;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  code {
+    background-color: #f0f0f0;
+  }
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  src: url('file:///Users/rodion/src/site/font/libre-baskerville-v16-latin-regular.woff2') format('woff2');
+}
+
+body {
+  text-decoration: none;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  max-width: 1000px;
+  margin: auto;
+  padding: 4em 0;
+}
+
+a {
+  color: #5871a2;
+}
+
+section {
+  display: flex;
+}
+
+#name {
+  font-size: 2em;
+  font-weight: 800;
+}
+
+#bio {
+  color: darkgrey;
+}
+
+#links {
+  display: flex;
+  gap: 1em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+#posts {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+#maintext {
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+.blogentry {
+  display: flex;
+  /* justify-content: space-between; */
+  gap: 1em;
+  /* align-items: flex-end; */
+}
