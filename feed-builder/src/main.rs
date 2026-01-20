@@ -14,6 +14,9 @@ struct Cli {
     /// Base URL of the site to be used for links in the resulting feed
     #[arg(short, long)]
     base_url: String,
+    /// Title of the feed
+    #[arg(short, long)]
+    title: String,
 }
 
 use rss::{ChannelBuilder, Item};
@@ -23,9 +26,9 @@ fn main() -> io::Result<()> {
     log::info!("directory is {}", cli.html_dir.display());
 
     let mut channel = ChannelBuilder::default()
-        .title("Rodion")
-        .link("https://rodio.codeberg.page")
-        .description("An RSS feed of Rodion Borovyk's blog posts.")
+        .title(&cli.title)
+        .link(&cli.base_url)
+        .description("RSS feed of ".to_owned() + &cli.title)
         .build();
 
     let files = read_dir(cli.html_dir)?;
@@ -50,7 +53,7 @@ fn main() -> io::Result<()> {
                 item.set_title(Some(title.to_string()));
                 item.set_description(Some(buf));
                 item.set_link(Some(
-                    Path::new("https://rodio.codeberg.page/")
+                    Path::new(&cli.base_url)
                         .join(file_path)
                         .to_string_lossy()
                         .to_string(),
