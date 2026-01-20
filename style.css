@@ -11,6 +11,11 @@
   }
 }
 
+html {
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
 @font-face {
   font-display: swap;
   font-family: 'Libre Baskerville';
