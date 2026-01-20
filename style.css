@@ -23,7 +23,7 @@ body {
   font-family: 'Libre Baskerville', Georgia, serif;
   max-width: 1000px;
   margin: auto;
-  padding: 4em 0;
+  padding: 1em 0;
 }
 
 a {
@@ -32,6 +32,10 @@ a {
 
 section {
   display: flex;
+}
+
+main {
+  padding: 1em;
 }
 
 #name {
@@ -46,8 +50,9 @@ section {
 #links {
   display: flex;
   gap: 1em;
-  margin-top: 2em;
+  margin-top: 1em;
   margin-bottom: 1em;
+  font-size: 1.2em;
 }
 
 #posts {
