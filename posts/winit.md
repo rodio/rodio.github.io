@@ -1,20 +1,6 @@
-+++
-title = "A Detour: winit & wgpu"
-date = 2025-05-19
-+++
-
-Sometimes I read a piece of code that intuitively should not work, yet it is working fine and I just can't.
-Once in a while, I go and dig deeper to see why.
-
-I take some pride in these moments of inquisitiveness.
-
-Maybe that's because nurturing the curiosity that enables them feels like a rebellion — instead of working on items
-from to-do lists, thinking about deliverables, milestones, KPIs, ROIs, synergies, and otherwise making the world a
-better place, I take a scenic detour through the mountains of code.
-
-This post documents one of these detours.
-
-## Setting the Scene
+---
+title: "Winit and WGPU"
+...
 
 [winit](https://docs.rs/winit/latest/winit/) is a Rust crate (library) that helps with creating windows on different
 operating systems and platforms.
@@ -28,7 +14,7 @@ This looks something like this:
 ```rust
 let window = winit_event_loop.create_window(window_attributes).unwrap();
 let surface = wgpu_instance.create_surface(&window).unwrap();
-````
+```
 
 By looking directly at wgpu's `Cargo.toml` (where its dependencies are declared) we can see that wgpu does not have
 winit as a dependency. Likewise, winit does not "know" about wgpu either.
@@ -65,7 +51,7 @@ about each other.
 Yet we can easily find this [blanket implementation](https://doc.rust-lang.org/book/ch10-02-traits.html) in wgpu's
 codebase:
 
-```rust
+```{.rust}
 impl<'a, T> From<T> for SurfaceTarget<'a>
 where
     T: WindowHandle + 'a,
@@ -74,7 +60,7 @@ where
         // snip
     }
 }
-```
+````
 
 It says that we can convert _from_ anything that implements something called `WindowHandle` _into_ `SurfaceTarget`.
 And because Rust implements `Into` for us when it has `From`, anything that implements `WindowHandle`
@@ -149,15 +135,4 @@ automatically implements `WasmNotSendSync`
 5. Anything can be `WasmNotSync` for the same reasons.
 
 Well, it seems like **every type** implements all these three traits...
-
-Now, one could take yet another detour to understand why these traits are needed in the first place—and potentially,
-this process is infinite.
-
-## Conclusion
-
-I often struggle to make time for detours like this. In a fast-moving world, there are always more urgent tasks —
-things that feel more “practical” or “effective.” That constant pressure often kills childlike-curiosity these
-journeys require. But this time, I pushed through — and I’m glad I did.
-
-Thanks for coming along. And if you made it this far, I hope you enjoyed the journey, too.
 
