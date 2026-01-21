@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>WebGPU Demo</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<a href="../index.html" style="font-family: sans-serif;">← back</a>
+<header id="title-block-header">
+<h1 class="title">WebGPU Demo</h1>
+</header>
+<p>Move cursor over it or touch it:</p>
+<canvas id="canvas" style="background-color: black; width: 100%; max-width:400px; height: 20%; max-height: 100px; display: block; padding: 0;">
+</canvas>
+<script type="module">
+      import init from "../static/learnwgpu.js";
+      init()
+      .catch((error) => {
+        if (error.message.startsWith("Using exceptions for control flow,")) {
+          console.log("This is not actually an error:", error);
+        } else {
+          throw error;
+        }
+      })
+      .then(() => {
+        console.log("WASM Loaded");
+      });
+</script>
+<p>This thing is done in Rust using the <a
+href="https://crates.io/crates/wgpu">wgpu</a> crate. <a
+href="https://sotrh.github.io/learn-wgpu/">This is the tutorial I
+used</a> and here is <a
+href="https://github.com/rodio/rust-play/tree/main/learnwgpu">the source
+code</a></p>
+<a href="../index.html" style="font-size: 1.5em; font-family: sans-serif;">← back</a>
+</body>
+</html>
