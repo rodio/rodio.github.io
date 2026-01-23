@@ -2,6 +2,8 @@
 title: "Yet Another Explanation of Lifetimes in Rust"
 ...
 
+<small>Sep 16, 2026</small>
+
 This post is my attempt to understand Rust's lifetimes deeper.
 
 ## What is this all about?

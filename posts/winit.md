@@ -2,6 +2,8 @@
 title: "Winit and WGPU"
 ...
 
+<small>May 24, 2026</small>
+
 [winit](https://docs.rs/winit/latest/winit/) is a Rust crate (library) that helps with creating windows on different
 operating systems and platforms.
 

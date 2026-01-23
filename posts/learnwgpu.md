@@ -2,7 +2,9 @@
 title: "WebGPU Demo"
 ...
 
-Move cursor over it or touch it:
+<small>Jan 21, 2026</small>
+
+Move cursor (slide on mobile) over it:
 
 <canvas id="canvas" style="background-color: black; width: 100%; max-width:400px; height: 20%; max-height: 100px; display: block; padding: 0;">
 </canvas>
