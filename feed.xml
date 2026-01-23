@@ -93,7 +93,7 @@
 <header id="title-block-header">
 <h1 class="title">Winit and WGPU</h1>
 </header>
-<p><small>May 24, 2026</small></p>
+<p><small>May 24, 2025</small></p>
 <p><a href="https://docs.rs/winit/latest/winit/">winit</a> is a Rust
 crate (library) that helps with creating windows on different operating
 systems and platforms.</p>
@@ -390,7 +390,7 @@ code</a></p>
 <header id="title-block-header">
 <h1 class="title">Yet Another Explanation of Lifetimes in Rust</h1>
 </header>
-<p><small>Sep 16, 2026</small></p>
+<p><small>Sep 16, 2025</small></p>
 <p>This post is my attempt to understand Rust’s lifetimes deeper.</p>
 <h2 id="what-is-this-all-about">What is this all about?</h2>
 <p>At first glance, writing a piece of code to compare lengths of two
