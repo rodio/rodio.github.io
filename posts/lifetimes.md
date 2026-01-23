@@ -2,7 +2,7 @@
 title: "Yet Another Explanation of Lifetimes in Rust"
 ...
 
-<small>Sep 16, 2026</small>
+<small>Sep 16, 2025</small>
 
 This post is my attempt to understand Rust's lifetimes deeper.
 
