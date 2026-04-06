@@ -17,19 +17,19 @@ for filename in *.md
 end
 popd
 
-pushd feed-builder
+pushd ../rss-builder
 if not cargo build -r
     echo "error in cargo"
     exit 1
 end
 popd
 
-if not cp feed-builder/target/release/feed-builder ./feed-builder-exe
+if not cp ../rss-builder/target/release/rss-builder ./rss-builder
     echo "error in cp"
     exit 1
 end
 
-if not ./feed-builder-exe --html-dir=posts --base-url=https://rodio.codeberg.page/ --title="Rodion's Blog"
+if not ./rss-builder --dir=posts --base-url=https://rodio.codeberg.page/ --title="Rodion's Blog"
     echo "error in feed-builder-exe"
     exit 1
 end
