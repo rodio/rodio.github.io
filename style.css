@@ -16,16 +16,9 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-@font-face {
-  font-display: swap;
-  font-family: 'Libre Baskerville';
-  font-style: normal;
-  src: url('file:///Users/rodion/src/site/font/libre-baskerville-v16-latin-regular.woff2') format('woff2');
-}
-
 body {
   text-decoration: none;
-  font-family: 'Libre Baskerville', Georgia, serif;
+  font-family: Georgia, serif;
   max-width: 1000px;
   margin: 3em auto;
   padding: 1em 0;
