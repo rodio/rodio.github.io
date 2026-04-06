@@ -2,7 +2,7 @@
 title: "WebGPU Demo"
 ...
 
-<small>Jan 21, 2026</small>
+<date hidden>Jan 21, 2026</date>
 
 Move cursor (slide on mobile) over it:
 

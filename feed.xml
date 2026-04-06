@@ -234,7 +234,7 @@ three traits…</p>
 <a href="../index.html" style="font-size: 1.5em; font-family: sans-serif;">← back</a>
 </body>
 </html>
-]]></description></item><item><title>WebGPU Demo</title><link>https://rodio.codeberg.page/posts/learnwgpu.html</link><description><![CDATA[<!DOCTYPE html>
+]]></description><pubDate>Mon, 6 Apr 2026 12:26:46 +0200</pubDate></item><item><title>WebGPU Demo</title><link>https://rodio.codeberg.page/posts/learnwgpu.html</link><description><![CDATA[<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
   <meta charset="utf-8" />
@@ -268,7 +268,7 @@ three traits…</p>
 <header id="title-block-header">
 <h1 class="title">WebGPU Demo</h1>
 </header>
-<p><small>Jan 21, 2026</small></p>
+<p><date hidden>Jan 21, 2026</date></p>
 <p>Move cursor (slide on mobile) over it:</p>
 <canvas id="canvas" style="background-color: black; width: 100%; max-width:400px; height: 20%; max-height: 100px; display: block; padding: 0;">
 </canvas>
@@ -295,7 +295,7 @@ code</a></p>
 <a href="../index.html" style="font-size: 1.5em; font-family: sans-serif;">← back</a>
 </body>
 </html>
-]]></description></item><item><title>Yet Another Explanation of Lifetimes in Rust</title><link>https://rodio.codeberg.page/posts/lifetimes.html</link><description><![CDATA[<!DOCTYPE html>
+]]></description><pubDate>Mon, 6 Apr 2026 12:26:46 +0200</pubDate></item><item><title>Yet Another Explanation of Lifetimes in Rust</title><link>https://rodio.codeberg.page/posts/lifetimes.html</link><description><![CDATA[<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
   <meta charset="utf-8" />
@@ -538,4 +538,4 @@ less annoying? I hope so.</p>
 <a href="../index.html" style="font-size: 1.5em; font-family: sans-serif;">← back</a>
 </body>
 </html>
-]]></description></item></channel></rss>
+]]></description><pubDate>Mon, 6 Apr 2026 12:26:46 +0200</pubDate></item></channel></rss>
